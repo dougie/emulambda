@@ -1,6 +1,5 @@
 from __future__ import print_function
 import math
-import numpy
 
 from hurry.filesize import size
 
@@ -48,13 +47,14 @@ def render_summary(stats):
         print('New sample size: %i' % len(stats['clock']))
     median = sorted(stats['clock'])[math.trunc(len(stats['clock']) / 2)]
     print(stats['clock'])
+    mean =  math.fsum(stats['clock'])/len(stats['clock'])
     print('Clock time:\n'
           '\tMin: %ims, Max: %ims, Median: %ims, Median Billing Bucket: %ims, Rounded Standard Deviation: %sms' % (
               min(stats['clock']),
               max(stats['clock']),
               median,
               billing_bucket(median),
-              math.trunc(math.ceil(numpy.std(stats['clock'], ddof=1)))
+              math.trunc(math.ceil(math.sqrt(math.fsum((x-mean)**2 for x in stats['clock'])/(len(stats['clock'])-1))))
           )) if len(stats['clock']) > 0 else print("No valid timing samples!")
     print('Peak resident set size (memory):\n'
           '\tMin: %s, Max: %s' % (

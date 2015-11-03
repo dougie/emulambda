@@ -12,7 +12,6 @@ setup(
     description='Python emulator for AWS Lambda.',
     install_requires=[
         'hurry.filesize',
-        'numpy',
         'boto3',
         'nose'
       ]
